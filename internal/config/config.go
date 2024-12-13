@@ -12,8 +12,13 @@ type Config struct {
 }
 
 type AppConfig struct {
-	Name string `yaml:"name"`
-	Port string `yaml:"port"`
+	Name       string            `yaml:"name"`
+	Port       string            `yaml:"port"`
+	Encryption EncrtiptionConfig `yaml:"encryption"`
+}
+
+type EncrtiptionConfig struct {
+	Salt uint8 `yaml:"salt"`
 }
 
 type DBConfig struct {
