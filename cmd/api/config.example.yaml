@@ -1,6 +1,9 @@
 app:
   name: cobagopi
-  port: 4000
+  port: ":4000"
+  encryption:
+    salt: 10
+    jwt_secret: secretjwtkey
 
 db:
   host: localhost

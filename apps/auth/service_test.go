@@ -6,6 +6,7 @@ import (
 	"cobagopi/internal/config"
 	"context"
 	"fmt"
+	"log"
 	"testing"
 
 	"github.com/google/uuid"
@@ -57,4 +58,28 @@ func TestRegister_Failed(t *testing.T) {
 		require.NotNil(t, err)
 		require.Equal(t, response.ErrEmailAlreadyUsed, err)
 	})
+}
+
+func TestLogin_success(t *testing.T) {
+	// register
+	email := fmt.Sprintf("%v@gmail.com", uuid.NewString())
+	password := "thispassword"
+	req := RegisterRequestPayload{
+		Email:    email,
+		Password: password,
+	}
+
+	err := svc.register(context.Background(), req)
+	require.Nil(t, err)
+
+	// do login
+	reqLogin := LoginRequestPayload{
+		Email:    email,
+		Password: password,
+	}
+
+	token, err := svc.login(context.Background(), reqLogin)
+	require.Nil(t, err)
+	require.NotEmpty(t, token)
+	log.Println(token)
 }

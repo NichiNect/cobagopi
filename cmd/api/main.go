@@ -1,9 +1,12 @@
 package main
 
 import (
+	"cobagopi/apps/auth"
 	"cobagopi/external/database"
 	"cobagopi/internal/config"
 	"fmt"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
@@ -22,4 +25,14 @@ func main() {
 	if db != nil {
 		fmt.Println("Database connected.")
 	}
+
+	// ? Register route auth
+	router := fiber.New(fiber.Config{
+		Prefork: true,
+		AppName: config.Cfg.App.Name,
+	})
+
+	auth.Init(router, db)
+
+	router.Listen(config.Cfg.App.Port)
 }
