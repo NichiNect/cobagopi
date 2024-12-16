@@ -2,6 +2,7 @@ package main
 
 import (
 	"cobagopi/apps/auth"
+	"cobagopi/apps/product"
 	"cobagopi/external/database"
 	"cobagopi/internal/config"
 	"fmt"
@@ -33,6 +34,8 @@ func main() {
 	})
 
 	auth.Init(router, db)
+	product.Init(router, db)
 
+	// ? Listen app
 	router.Listen(config.Cfg.App.Port)
 }
