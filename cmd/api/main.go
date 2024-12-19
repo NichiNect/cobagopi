@@ -3,6 +3,7 @@ package main
 import (
 	"cobagopi/apps/auth"
 	"cobagopi/apps/product"
+	"cobagopi/apps/transaction"
 	"cobagopi/external/database"
 	"cobagopi/internal/config"
 	"fmt"
@@ -27,14 +28,15 @@ func main() {
 		fmt.Println("Database connected.")
 	}
 
-	// ? Register route auth
 	router := fiber.New(fiber.Config{
 		Prefork: true,
 		AppName: config.Cfg.App.Name,
 	})
 
+	// ? Register route
 	auth.Init(router, db)
 	product.Init(router, db)
+	transaction.Init(router, db)
 
 	// ? Listen app
 	router.Listen(config.Cfg.App.Port)
