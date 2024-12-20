@@ -4,6 +4,7 @@ import (
 	"cobagopi/infra/response"
 	"cobagopi/internal/config"
 	"cobagopi/utility"
+	"fmt"
 	"log"
 	"strings"
 
@@ -41,6 +42,28 @@ func CheckAuth() fiber.Handler {
 
 		c.Locals("ROLE", role)
 		c.Locals("PUBLIC_ID", publicId)
+
+		return c.Next()
+	}
+}
+
+func CheckRole(authorizedRoles []string) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		role := fmt.Sprintf("%v", c.Locals("ROLE"))
+
+		isExists := false
+		for _, authorizeRole := range authorizedRoles {
+			if role == authorizeRole {
+				isExists = true
+				break
+			}
+		}
+
+		if !isExists {
+			return NewResponse(
+				WithError(response.ErrorForbiddenAccess),
+			).Send(c)
+		}
 
 		return c.Next()
 	}
